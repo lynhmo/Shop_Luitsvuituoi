@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Shop_Luitsvuituoi
+namespace Shop_Luitsvuituoi.GUI
 {
-    public partial class Form1 : Form
+    public partial class KiemTraBaoHanh : Form
     {
-        public Form1()
+        public KiemTraBaoHanh()
         {
             InitializeComponent();
         }
