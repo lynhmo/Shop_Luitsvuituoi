@@ -17,7 +17,6 @@ namespace Shop_Luitsvuituoi
             Application.Run(new Main());
             //Application.Run(new Login());
             //Application.Run(new KhachHang());
-            //Connection.Connection.DB_connection();
         }
     }
 }

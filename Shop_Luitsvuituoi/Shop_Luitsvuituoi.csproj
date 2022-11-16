@@ -47,6 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connection\Connection.cs" />
+    <Compile Include="GUI\AllSanPham.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\AllSanPham.Designer.cs">
+      <DependentUpon>AllSanPham.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\HoaDonPrint.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,8 +89,16 @@
     <Compile Include="GUI\PhieuNhapXuat.Designer.cs">
       <DependentUpon>PhieuNhapXuat.cs</DependentUpon>
     </Compile>
+    <Compile Include="LuitsvuituoiDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LuitsvuituoiDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="GUI\AllSanPham.resx">
+      <DependentUpon>AllSanPham.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\HoaDonPrint.resx">
       <DependentUpon>HoaDonPrint.cs</DependentUpon>
     </EmbeddedResource>
@@ -107,6 +121,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="LuitsvuituoiDataSet.xsc">
+      <DependentUpon>LuitsvuituoiDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="LuitsvuituoiDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LuitsvuituoiDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="LuitsvuituoiDataSet.xss">
+      <DependentUpon>LuitsvuituoiDataSet.xsd</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
