@@ -24,8 +24,9 @@ namespace Shop_Luitsvuituoi
             int sl = (int)cmd.ExecuteScalar();
             if (sl == 1)
             {
-                this.Hide();
                 Main main = new Main();
+                main.RefToMain = this;
+                this.Visible = false;
                 main.Show();
             }
             else
@@ -35,7 +36,24 @@ namespace Shop_Luitsvuituoi
         }
         private void button2_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Dispose();
+        }
+        private void txtUser_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                txtPass.Focus();
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void txtPass_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnLogin_Click(sender, e);
+                e.SuppressKeyPress = true;
+            }
         }
     }
 }
