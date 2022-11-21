@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Shop_Luitsvuituoi
 {
@@ -14,26 +15,40 @@ namespace Shop_Luitsvuituoi
         {
             InitializeComponent();
         }
-        private string connectionString = "Data Source=(local); Initial Catalog = Luitsvuituoi; Integrated Security=SSPI;";
+        private static string connectionString = "Data Source=(local); Initial Catalog = Luitsvuituoi; Integrated Security=SSPI;";
+        private static SqlConnection cnn = new SqlConnection(connectionString);
         private void Main_Load(object sender, EventArgs e)
         {
             this.MinimumSize = new Size(960, 540);
-            //string connectionString = "Data Source=(local); Initial Catalog = Luitsvuituoi; Integrated Security=SSPI;";
-            SqlConnection cnn = new SqlConnection(connectionString);
             cnn.Open();
             //table Nhan vien
+            load_table_NV();
+            //table hang hoa
+            load_table_HH();
+            // load combobox id hang hoa
+            load_id_HH();
+            //combobox loai load
+                //comboboxLoad_loai();
+            comboboxHH_Loai_Load();
+        }
+        private void load_table_NV()
+        {
             string query = $"SELECT * FROM nhanvien";
             SqlDataAdapter da = new SqlDataAdapter(query, cnn);
             DataTable dtbl = new DataTable();
             da.Fill(dtbl);
             tableNhanVien.DataSource = dtbl;
-            //table hang hoa
+        }
+        private void load_table_HH()
+        {
             string queryHH = $"SELECT * FROM hanghoa";
             SqlDataAdapter daHH = new SqlDataAdapter(queryHH, cnn);
             DataTable tableHH = new DataTable();
             daHH.Fill(tableHH);
             tableHangHoa.DataSource = tableHH;
-            // load combobox id hang hoa
+        }
+        private void load_id_HH()
+        {
             string querycb = "select id_hh from hanghoa";
             SqlDataAdapter daHHC = new SqlDataAdapter(querycb, cnn);
             DataSet ds = new DataSet();
@@ -41,16 +56,35 @@ namespace Shop_Luitsvuituoi
             comboboxMaSP.DisplayMember = "id_hh";
             comboboxMaSP.ValueMember = "id_hh";
             comboboxMaSP.DataSource = ds.Tables["id_hh"];
-            //combobox loai load
+        }
+        private void comboboxLoad_loai()
+        {
             string cmbLoai = "select loai from hanghoa";
             SqlDataAdapter cmbLoai_ = new SqlDataAdapter(cmbLoai, cnn);
             DataSet ds1 = new DataSet();
-            daHHC.Fill(ds1, "loai");
+            cmbLoai_.Fill(ds1, "loai");
             comboboxLoai.DisplayMember = "loai";
             comboboxLoai.ValueMember = "loai";
-            comboboxLoai.DataSource = ds.Tables["loai"];
+            comboboxLoai.DataSource = ds1.Tables["loai"];
         }
-
+        private void comboboxHH_Loai_Load()
+        {
+            comboboxLoai.Items.Add("gpu");
+            comboboxLoai.Items.Add("ram");
+            comboboxLoai.Items.Add("cpu");
+            comboboxLoai.Items.Add("keyboard");
+            comboboxLoai.Items.Add("mouse");
+            comboboxLoai.Items.Add("motherboard");
+            comboboxLoai.Items.Add("psu");
+            comboboxLoai.Items.Add("cooler");
+            comboboxLoai.Items.Add("monitor");
+            comboboxLoai.Items.Add("headset");
+            comboboxLoai.Items.Add("mouse pad");
+            comboboxLoai.Items.Add("123");
+            comboboxLoai.DropDownStyle = ComboBoxStyle.DropDown;
+            comboboxLoai.AutoCompleteSource = AutoCompleteSource.ListItems;
+            comboboxLoai.AutoCompleteMode = AutoCompleteMode.Suggest;
+        }
         private void btnListKhachHang_Click(object sender, EventArgs e)
         {
             using (KhachHang formKH = new KhachHang())
@@ -63,7 +97,6 @@ namespace Shop_Luitsvuituoi
                 }
             }
         }
-
         private void btnTaoKH_Click(object sender, EventArgs e)
         {
             SqlConnection cnn = new SqlConnection(connectionString);
@@ -90,8 +123,6 @@ namespace Shop_Luitsvuituoi
                 }
             }
         }
-
-
         private void tableNhanVien_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             tableNhanVien.CurrentRow.Selected = true;
@@ -153,7 +184,6 @@ namespace Shop_Luitsvuituoi
                 cnn.Close();
             }
         }
-
         private void btnR_Click(object sender, EventArgs e)
         {
             SqlConnection cnn = new SqlConnection(connectionString);
@@ -165,7 +195,6 @@ namespace Shop_Luitsvuituoi
             tableNhanVien.DataSource = dtbl;
             TextNVClear();
         }
-
         private void btnUpdateNV_Click(object sender, EventArgs e)
         {
             SqlConnection cnn = new SqlConnection(connectionString);
@@ -184,7 +213,6 @@ namespace Shop_Luitsvuituoi
             cnn.Close();
             MessageBox.Show("Sửa thành công!");
         }
-
         private void btnDeleteNV_Click(object sender, EventArgs e)
         {
             SqlConnection cnn = new SqlConnection(connectionString);
@@ -212,7 +240,6 @@ namespace Shop_Luitsvuituoi
                 this.RefToMain.Show();
             }
         }
-
         private void btnAddHH_Click(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(txtTenHH.Text) || String.IsNullOrEmpty(txtDonGia.Text))
@@ -238,6 +265,14 @@ namespace Shop_Luitsvuituoi
                 MessageBox.Show("Thêm thành công!");
                 cnn.Close();
             }
+        }
+        private void tableHangHoa_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            tableHangHoa.CurrentRow.Selected = true;
+        }
+        private void comboboxLoai_Click(object sender, EventArgs e)
+        {
+            comboboxLoai.DroppedDown = true;
         }
     }
 }
