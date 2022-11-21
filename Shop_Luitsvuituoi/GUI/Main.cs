@@ -21,11 +21,34 @@ namespace Shop_Luitsvuituoi
             //string connectionString = "Data Source=(local); Initial Catalog = Luitsvuituoi; Integrated Security=SSPI;";
             SqlConnection cnn = new SqlConnection(connectionString);
             cnn.Open();
+            //table Nhan vien
             string query = $"SELECT * FROM nhanvien";
             SqlDataAdapter da = new SqlDataAdapter(query, cnn);
             DataTable dtbl = new DataTable();
             da.Fill(dtbl);
             tableNhanVien.DataSource = dtbl;
+            //table hang hoa
+            string queryHH = $"SELECT * FROM hanghoa";
+            SqlDataAdapter daHH = new SqlDataAdapter(queryHH, cnn);
+            DataTable tableHH = new DataTable();
+            daHH.Fill(tableHH);
+            tableHangHoa.DataSource = tableHH;
+            // load combobox id hang hoa
+            string querycb = "select id_hh from hanghoa";
+            SqlDataAdapter daHHC = new SqlDataAdapter(querycb, cnn);
+            DataSet ds = new DataSet();
+            daHHC.Fill(ds, "id_hh");
+            comboboxMaSP.DisplayMember = "id_hh";
+            comboboxMaSP.ValueMember = "id_hh";
+            comboboxMaSP.DataSource = ds.Tables["id_hh"];
+            //combobox loai load
+            string cmbLoai = "select loai from hanghoa";
+            SqlDataAdapter cmbLoai_ = new SqlDataAdapter(cmbLoai, cnn);
+            DataSet ds1 = new DataSet();
+            daHHC.Fill(ds1, "loai");
+            comboboxLoai.DisplayMember = "loai";
+            comboboxLoai.ValueMember = "loai";
+            comboboxLoai.DataSource = ds.Tables["loai"];
         }
 
         private void btnListKhachHang_Click(object sender, EventArgs e)
@@ -43,7 +66,6 @@ namespace Shop_Luitsvuituoi
 
         private void btnTaoKH_Click(object sender, EventArgs e)
         {
-            string connectionString = "Data Source=(local); Initial Catalog = Luitsvuituoi; Integrated Security=SSPI;";
             SqlConnection cnn = new SqlConnection(connectionString);
             string tenKH = txtTenKhachHang.Text;
             string phone = txtPhone.Text;
@@ -81,10 +103,10 @@ namespace Shop_Luitsvuituoi
             txtBirth.Text = tableNhanVien.Rows[e.RowIndex].Cells["birth"].Value.ToString();
             txtAddress.Text = tableNhanVien.Rows[e.RowIndex].Cells["address"].Value.ToString();
             txtPhoneNV.Text = tableNhanVien.Rows[e.RowIndex].Cells["phone"].Value.ToString();
-            //txtMaHH.Text = tableHangHoa.Rows[e.RowIndex].Cells["id_hh"].Value.ToString();
-
+            //Sử dụng toán tử 3 ngôi để kiểm tra có phải admin hay không
+            boxAdmin.Checked = (Int32.Parse(tableNhanVien.Rows[e.RowIndex].Cells["admin"].Value.ToString())==1) ? true : false;
         }
-        private void TextClear()
+        private void TextNVClear()
         {
             txtMaNV.Text = null;
             txtUsername.Text = null;
@@ -141,7 +163,7 @@ namespace Shop_Luitsvuituoi
             DataTable dtbl = new DataTable();
             da.Fill(dtbl);
             tableNhanVien.DataSource = dtbl;
-            TextClear();
+            TextNVClear();
         }
 
         private void btnUpdateNV_Click(object sender, EventArgs e)
@@ -178,8 +200,8 @@ namespace Shop_Luitsvuituoi
             tableNhanVien.DataSource = dtbl;
             //
             cnn.Close();
-            TextClear();
-            MessageBox.Show("Xoa thành công!");
+            TextNVClear();
+            MessageBox.Show("Xoá thành công!");
         }
         public Form RefToMain { get; set; }
         private void navBar_SelectedIndexChanged(object sender, EventArgs e)
@@ -188,6 +210,33 @@ namespace Shop_Luitsvuituoi
             {
                 this.Dispose();
                 this.RefToMain.Show();
+            }
+        }
+
+        private void btnAddHH_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(txtTenHH.Text) || String.IsNullOrEmpty(txtDonGia.Text))
+            {
+                MessageBox.Show("Vui lòng nhập username và password!!!");
+            }
+            else
+            {
+                SqlConnection cnn = new SqlConnection(connectionString);
+                string queryNV = $"INSERT INTO hanghoa (tenhanghoa,soluong,loai,dongia,ghichu) VALUES ('{txtTenHH.Text}','{soluongHH.Value}','{loai}','{txtDonGia.Text}','{txtGhichu.Text}')";
+                SqlCommand cmd = new SqlCommand(queryNV, cnn);
+                cnn.Open();
+                cmd.ExecuteNonQuery();
+                // update table
+                    string query = $"SELECT * FROM hanghoa";
+                    SqlDataAdapter da = new SqlDataAdapter(query, cnn);
+                    DataTable dtbl = new DataTable();
+                    da.Fill(dtbl);
+                    tableHangHoa.DataSource = dtbl;
+                //
+                cnn.Close();
+                TextNVClear();
+                MessageBox.Show("Thêm thành công!");
+                cnn.Close();
             }
         }
     }
