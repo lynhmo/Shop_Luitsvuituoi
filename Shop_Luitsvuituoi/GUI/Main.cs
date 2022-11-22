@@ -266,6 +266,15 @@ namespace Shop_Luitsvuituoi
                 }
                 
             }
+            // refresh lai button khi chuyen qua tab khac
+            if (navBar.SelectedTab != banhangTab)
+            {
+                btnAddSP_toCTHD.Enabled = false;
+                btnDeleteSP_toCTHD.Enabled = false;
+                btnInHoaDon.Enabled = false;
+                btnThanhToan.Enabled = false;
+                btnTaoHoaDon.Enabled = true;
+            }
         }
         private void btnAddHH_Click(object sender, EventArgs e)
         {
@@ -385,6 +394,29 @@ namespace Shop_Luitsvuituoi
             // hàm ngăn chặn form Main đóng mà form login vẫn mở trong background
             this.Dispose();
             this.RefToMain.Show();
+        }
+
+        private void btnTaoHoaDon_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(txtMaKhachHang.Text))
+            {
+                MessageBox.Show("Vui lòng chọn khách hàng!!!");
+            }
+            else
+            {
+                string queryNV = $"INSERT INTO hoadon (makh,nhanvien,tongtien) VALUES ('{txtMaKhachHang.Text}',1,100)";
+                SqlCommand cmd = new SqlCommand(queryNV, cnn);
+                cnn.Open();
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("Thêm thành công!");
+                cnn.Close();
+                //
+                btnTaoHoaDon.Enabled = false;
+                btnAddSP_toCTHD.Enabled = true;
+                btnDeleteSP_toCTHD.Enabled = true;
+                btnInHoaDon.Enabled = true;
+                btnThanhToan.Enabled = true;
+            }
         }
     }
 }

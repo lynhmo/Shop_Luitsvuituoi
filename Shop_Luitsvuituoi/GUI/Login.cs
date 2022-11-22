@@ -18,21 +18,29 @@ namespace Shop_Luitsvuituoi
             SqlConnection cnn = new SqlConnection(connectionString);
             string pass = txtPass.Text;
             string name = txtUser.Text;
-            string query = $"SELECT count(*) FROM nhanvien WHERE username = '{name}' AND password = '{pass}' ";
-            SqlCommand cmd = new SqlCommand(query, cnn);
-            cnn.Open();
-            int sl = (int)cmd.ExecuteScalar();
-            if (sl == 1)
+            if (String.IsNullOrEmpty(name) || String.IsNullOrEmpty(pass))
             {
-                Main main = new Main();
-                main.RefToMain = this;
-                this.Visible = false;
-                main.Show();
-                cnn.Close();
+                MessageBox.Show("nhap usernam va pass");
             }
             else
             {
-                MessageBox.Show("Loi");
+                string query = $"SELECT count(*) FROM nhanvien WHERE username = '{name}' AND password = '{pass}' ";
+                SqlCommand cmd = new SqlCommand(query, cnn);
+                cnn.Open();
+                int sl = (int)cmd.ExecuteScalar();
+                if (sl == 1)
+                {
+                    Main main = new Main();
+                    main.RefToMain = this;
+                    this.Visible = false;
+                    main.Show();
+                    cnn.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Loi");
+                }
+
             }
         }
         private void button2_Click(object sender, EventArgs e)
