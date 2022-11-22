@@ -28,6 +28,7 @@ namespace Shop_Luitsvuituoi
                 main.RefToMain = this;
                 this.Visible = false;
                 main.Show();
+                cnn.Close();
             }
             else
             {

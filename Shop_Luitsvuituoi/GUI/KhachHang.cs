@@ -33,11 +33,14 @@ namespace Shop_Luitsvuituoi.GUI
         }
         private void tableKhachHang_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            tableKhachHang.CurrentRow.Selected = true;
-            //take out values from table to textbox
-            txtMaKhachHang.Text = tableKhachHang.Rows[e.RowIndex].Cells["id_KH"].Value.ToString();
-            txtTenKhachHang.Text = tableKhachHang.Rows[e.RowIndex].Cells["tenKhachhang"].Value.ToString();
-            _KH_phone = tableKhachHang.Rows[e.RowIndex].Cells["phone"].Value.ToString();
+            if (e.RowIndex >= 0)
+            {
+                tableKhachHang.CurrentRow.Selected = true;
+                //take out values from table to textbox
+                txtMaKhachHang.Text = tableKhachHang.Rows[e.RowIndex].Cells["id_KH"].Value.ToString();
+                txtTenKhachHang.Text = tableKhachHang.Rows[e.RowIndex].Cells["tenKhachhang"].Value.ToString();
+                _KH_phone = tableKhachHang.Rows[e.RowIndex].Cells["phone"].Value.ToString();
+            }
         }
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.navBar = new System.Windows.Forms.TabControl();
             this.banhangTab = new System.Windows.Forms.TabPage();
             this.grBox2 = new System.Windows.Forms.GroupBox();
@@ -66,23 +67,24 @@
             this.label1 = new System.Windows.Forms.Label();
             this.khoTab = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.btnFindProd = new System.Windows.Forms.Button();
+            this.btnFindHH = new System.Windows.Forms.Button();
             this.tableHangHoa = new System.Windows.Forms.DataGridView();
-            this.idHH = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id_hh = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tenhanghoa = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.soluong = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.loai = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dongia = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.baohanh = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ghichu = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.textBox13 = new System.Windows.Forms.TextBox();
-            this.textBox12 = new System.Windows.Forms.TextBox();
+            this.txtTenHH_Find = new System.Windows.Forms.TextBox();
+            this.txtMaHH_Find = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.soluongHH = new System.Windows.Forms.NumericUpDown();
-            this.button12 = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
+            this.sonambaohanh = new System.Windows.Forms.NumericUpDown();
+            this.Number_soluongHH = new System.Windows.Forms.NumericUpDown();
+            this.btnDeleteHH = new System.Windows.Forms.Button();
+            this.btnUpdateHH = new System.Windows.Forms.Button();
             this.btnAddHH = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
@@ -95,6 +97,7 @@
             this.txtTenHH = new System.Windows.Forms.TextBox();
             this.txtMaHH = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
@@ -146,6 +149,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dangxuatTab = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
+            this.btnRefreshHH = new System.Windows.Forms.Button();
             this.navBar.SuspendLayout();
             this.banhangTab.SuspendLayout();
             this.grBox2.SuspendLayout();
@@ -156,7 +160,8 @@
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tableHangHoa)).BeginInit();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.soluongHH)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sonambaohanh)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Number_soluongHH)).BeginInit();
             this.nhanvienTab.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tableNhanVien)).BeginInit();
@@ -553,10 +558,10 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.btnFindProd);
+            this.groupBox3.Controls.Add(this.btnFindHH);
             this.groupBox3.Controls.Add(this.tableHangHoa);
-            this.groupBox3.Controls.Add(this.textBox13);
-            this.groupBox3.Controls.Add(this.textBox12);
+            this.groupBox3.Controls.Add(this.txtTenHH_Find);
+            this.groupBox3.Controls.Add(this.txtMaHH_Find);
             this.groupBox3.Controls.Add(this.label18);
             this.groupBox3.Controls.Add(this.label17);
             this.groupBox3.Location = new System.Drawing.Point(6, 161);
@@ -566,14 +571,15 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Tất cả sản phẩm";
             // 
-            // btnFindProd
+            // btnFindHH
             // 
-            this.btnFindProd.Location = new System.Drawing.Point(909, 30);
-            this.btnFindProd.Name = "btnFindProd";
-            this.btnFindProd.Size = new System.Drawing.Size(151, 26);
-            this.btnFindProd.TabIndex = 21;
-            this.btnFindProd.Text = "Tìm kiếm";
-            this.btnFindProd.UseVisualStyleBackColor = true;
+            this.btnFindHH.Location = new System.Drawing.Point(916, 31);
+            this.btnFindHH.Name = "btnFindHH";
+            this.btnFindHH.Size = new System.Drawing.Size(151, 26);
+            this.btnFindHH.TabIndex = 21;
+            this.btnFindHH.Text = "Tìm kiếm";
+            this.btnFindHH.UseVisualStyleBackColor = true;
+            this.btnFindHH.Click += new System.EventHandler(this.btnFindHH_Click);
             // 
             // tableHangHoa
             // 
@@ -582,7 +588,7 @@
             this.tableHangHoa.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.tableHangHoa.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tableHangHoa.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.idHH,
+            this.id_hh,
             this.tenhanghoa,
             this.soluong,
             this.loai,
@@ -597,12 +603,12 @@
             this.tableHangHoa.TabIndex = 20;
             this.tableHangHoa.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tableHangHoa_CellClick);
             // 
-            // idHH
+            // id_hh
             // 
-            this.idHH.DataPropertyName = "id_hh";
-            this.idHH.HeaderText = "Mã hàng";
-            this.idHH.MinimumWidth = 6;
-            this.idHH.Name = "idHH";
+            this.id_hh.DataPropertyName = "id_hh";
+            this.id_hh.HeaderText = "Mã hàng";
+            this.id_hh.MinimumWidth = 6;
+            this.id_hh.Name = "id_hh";
             // 
             // tenhanghoa
             // 
@@ -645,24 +651,24 @@
             this.ghichu.MinimumWidth = 6;
             this.ghichu.Name = "ghichu";
             // 
-            // textBox13
+            // txtTenHH_Find
             // 
-            this.textBox13.Location = new System.Drawing.Point(557, 33);
-            this.textBox13.Name = "textBox13";
-            this.textBox13.Size = new System.Drawing.Size(271, 23);
-            this.textBox13.TabIndex = 18;
+            this.txtTenHH_Find.Location = new System.Drawing.Point(530, 33);
+            this.txtTenHH_Find.Name = "txtTenHH_Find";
+            this.txtTenHH_Find.Size = new System.Drawing.Size(271, 23);
+            this.txtTenHH_Find.TabIndex = 18;
             // 
-            // textBox12
+            // txtMaHH_Find
             // 
-            this.textBox12.Location = new System.Drawing.Point(126, 33);
-            this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(271, 23);
-            this.textBox12.TabIndex = 19;
+            this.txtMaHH_Find.Location = new System.Drawing.Point(149, 33);
+            this.txtMaHH_Find.Name = "txtMaHH_Find";
+            this.txtMaHH_Find.Size = new System.Drawing.Size(248, 23);
+            this.txtMaHH_Find.TabIndex = 19;
             // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(452, 36);
+            this.label18.Location = new System.Drawing.Point(425, 36);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(99, 17);
             this.label18.TabIndex = 16;
@@ -682,9 +688,11 @@
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.soluongHH);
-            this.groupBox2.Controls.Add(this.button12);
-            this.groupBox2.Controls.Add(this.button11);
+            this.groupBox2.Controls.Add(this.btnRefreshHH);
+            this.groupBox2.Controls.Add(this.sonambaohanh);
+            this.groupBox2.Controls.Add(this.Number_soluongHH);
+            this.groupBox2.Controls.Add(this.btnDeleteHH);
+            this.groupBox2.Controls.Add(this.btnUpdateHH);
             this.groupBox2.Controls.Add(this.btnAddHH);
             this.groupBox2.Controls.Add(this.button10);
             this.groupBox2.Controls.Add(this.button9);
@@ -697,54 +705,63 @@
             this.groupBox2.Controls.Add(this.txtTenHH);
             this.groupBox2.Controls.Add(this.txtMaHH);
             this.groupBox2.Controls.Add(this.label15);
+            this.groupBox2.Controls.Add(this.label29);
             this.groupBox2.Controls.Add(this.label28);
             this.groupBox2.Controls.Add(this.label13);
             this.groupBox2.Controls.Add(this.label16);
             this.groupBox2.Controls.Add(this.label14);
             this.groupBox2.Controls.Add(this.label12);
-            this.groupBox2.Location = new System.Drawing.Point(6, 3);
+            this.groupBox2.Location = new System.Drawing.Point(6, 0);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(1088, 151);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Sản phẩm";
             // 
-            // soluongHH
+            // sonambaohanh
             // 
-            this.soluongHH.Location = new System.Drawing.Point(121, 114);
-            this.soluongHH.Margin = new System.Windows.Forms.Padding(2);
-            this.soluongHH.Name = "soluongHH";
-            this.soluongHH.Size = new System.Drawing.Size(90, 23);
-            this.soluongHH.TabIndex = 16;
+            this.sonambaohanh.Location = new System.Drawing.Point(149, 115);
+            this.sonambaohanh.Margin = new System.Windows.Forms.Padding(2);
+            this.sonambaohanh.Name = "sonambaohanh";
+            this.sonambaohanh.Size = new System.Drawing.Size(82, 23);
+            this.sonambaohanh.TabIndex = 16;
             // 
-            // button12
+            // Number_soluongHH
             // 
-            this.button12.Location = new System.Drawing.Point(597, 109);
-            this.button12.Margin = new System.Windows.Forms.Padding(2);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(151, 28);
-            this.button12.TabIndex = 15;
-            this.button12.Text = "Xoá sản phẩm";
-            this.button12.UseVisualStyleBackColor = true;
-            this.button12.Click += new System.EventHandler(this.btnAddHH_Click);
+            this.Number_soluongHH.Location = new System.Drawing.Point(824, 74);
+            this.Number_soluongHH.Margin = new System.Windows.Forms.Padding(2);
+            this.Number_soluongHH.Name = "Number_soluongHH";
+            this.Number_soluongHH.Size = new System.Drawing.Size(99, 23);
+            this.Number_soluongHH.TabIndex = 16;
             // 
-            // button11
+            // btnDeleteHH
             // 
-            this.button11.Location = new System.Drawing.Point(752, 109);
-            this.button11.Margin = new System.Windows.Forms.Padding(2);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(151, 28);
-            this.button11.TabIndex = 15;
-            this.button11.Text = " Sửa sản phẩm";
-            this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.btnAddHH_Click);
+            this.btnDeleteHH.Location = new System.Drawing.Point(946, 109);
+            this.btnDeleteHH.Margin = new System.Windows.Forms.Padding(2);
+            this.btnDeleteHH.Name = "btnDeleteHH";
+            this.btnDeleteHH.Size = new System.Drawing.Size(121, 28);
+            this.btnDeleteHH.TabIndex = 15;
+            this.btnDeleteHH.Text = "Xoá sản phẩm";
+            this.btnDeleteHH.UseVisualStyleBackColor = true;
+            this.btnDeleteHH.Click += new System.EventHandler(this.btnDeleteHH_Click);
+            // 
+            // btnUpdateHH
+            // 
+            this.btnUpdateHH.Location = new System.Drawing.Point(946, 69);
+            this.btnUpdateHH.Margin = new System.Windows.Forms.Padding(2);
+            this.btnUpdateHH.Name = "btnUpdateHH";
+            this.btnUpdateHH.Size = new System.Drawing.Size(121, 28);
+            this.btnUpdateHH.TabIndex = 15;
+            this.btnUpdateHH.Text = " Sửa sản phẩm";
+            this.btnUpdateHH.UseVisualStyleBackColor = true;
+            this.btnUpdateHH.Click += new System.EventHandler(this.btnUpdateHH_Click);
             // 
             // btnAddHH
             // 
-            this.btnAddHH.Location = new System.Drawing.Point(909, 109);
+            this.btnAddHH.Location = new System.Drawing.Point(946, 31);
             this.btnAddHH.Margin = new System.Windows.Forms.Padding(2);
             this.btnAddHH.Name = "btnAddHH";
-            this.btnAddHH.Size = new System.Drawing.Size(151, 28);
+            this.btnAddHH.Size = new System.Drawing.Size(121, 28);
             this.btnAddHH.TabIndex = 15;
             this.btnAddHH.Text = "Thêm sản phẩm";
             this.btnAddHH.UseVisualStyleBackColor = true;
@@ -797,9 +814,9 @@
             // 
             // txtGhichu
             // 
-            this.txtGhichu.Location = new System.Drawing.Point(530, 81);
+            this.txtGhichu.Location = new System.Drawing.Point(530, 76);
             this.txtGhichu.Name = "txtGhichu";
-            this.txtGhichu.Size = new System.Drawing.Size(530, 23);
+            this.txtGhichu.Size = new System.Drawing.Size(204, 62);
             this.txtGhichu.TabIndex = 13;
             this.txtGhichu.Text = "";
             // 
@@ -807,18 +824,19 @@
             // 
             this.comboboxLoai.DropDownWidth = 271;
             this.comboboxLoai.FormattingEnabled = true;
-            this.comboboxLoai.Location = new System.Drawing.Point(790, 33);
+            this.comboboxLoai.Location = new System.Drawing.Point(824, 33);
             this.comboboxLoai.Name = "comboboxLoai";
-            this.comboboxLoai.Size = new System.Drawing.Size(271, 24);
+            this.comboboxLoai.Size = new System.Drawing.Size(99, 24);
             this.comboboxLoai.TabIndex = 12;
             this.comboboxLoai.Click += new System.EventHandler(this.comboboxLoai_Click);
             // 
             // txtDonGia
             // 
-            this.txtDonGia.Location = new System.Drawing.Point(121, 81);
+            this.txtDonGia.Location = new System.Drawing.Point(149, 76);
             this.txtDonGia.Name = "txtDonGia";
             this.txtDonGia.Size = new System.Drawing.Size(248, 23);
             this.txtDonGia.TabIndex = 9;
+            this.txtDonGia.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDonGia_KeyPress);
             // 
             // txtTenHH
             // 
@@ -829,7 +847,7 @@
             // 
             // txtMaHH
             // 
-            this.txtMaHH.Location = new System.Drawing.Point(121, 34);
+            this.txtMaHH.Location = new System.Drawing.Point(149, 34);
             this.txtMaHH.Name = "txtMaHH";
             this.txtMaHH.Size = new System.Drawing.Size(248, 23);
             this.txtMaHH.TabIndex = 11;
@@ -837,16 +855,25 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(425, 81);
+            this.label15.Location = new System.Drawing.Point(425, 76);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(57, 17);
             this.label15.TabIndex = 3;
             this.label15.Text = "Ghi chú";
             // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(22, 115);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(101, 17);
+            this.label29.TabIndex = 4;
+            this.label29.Text = "Năm bảo hành";
+            // 
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(22, 116);
+            this.label28.Location = new System.Drawing.Point(749, 76);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(64, 17);
             this.label28.TabIndex = 4;
@@ -855,7 +882,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(22, 81);
+            this.label13.Location = new System.Drawing.Point(22, 76);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(58, 17);
             this.label13.TabIndex = 4;
@@ -1335,16 +1362,28 @@
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
             // 
+            // btnRefreshHH
+            // 
+            this.btnRefreshHH.Location = new System.Drawing.Point(824, 109);
+            this.btnRefreshHH.Name = "btnRefreshHH";
+            this.btnRefreshHH.Size = new System.Drawing.Size(99, 28);
+            this.btnRefreshHH.TabIndex = 17;
+            this.btnRefreshHH.Text = "Refresh";
+            this.btnRefreshHH.UseVisualStyleBackColor = true;
+            this.btnRefreshHH.Click += new System.EventHandler(this.btnRefreshHH_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1100, 689);
             this.Controls.Add(this.navBar);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Main";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.Load += new System.EventHandler(this.Main_Load);
             this.navBar.ResumeLayout(false);
             this.banhangTab.ResumeLayout(false);
@@ -1360,7 +1399,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.tableHangHoa)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.soluongHH)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sonambaohanh)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Number_soluongHH)).EndInit();
             this.nhanvienTab.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tableNhanVien)).EndInit();
@@ -1427,10 +1467,10 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.RichTextBox txtGhichu;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button btnFindProd;
+        private System.Windows.Forms.Button btnFindHH;
         private System.Windows.Forms.DataGridView tableHangHoa;
-        private System.Windows.Forms.TextBox textBox13;
-        private System.Windows.Forms.TextBox textBox12;
+        private System.Windows.Forms.TextBox txtTenHH_Find;
+        private System.Windows.Forms.TextBox txtMaHH_Find;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Button button8;
@@ -1485,17 +1525,20 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn phone;
         private System.Windows.Forms.DataGridViewTextBoxColumn admin;
         private System.Windows.Forms.Button btnAddHH;
-        private System.Windows.Forms.NumericUpDown soluongHH;
-        private System.Windows.Forms.Button button12;
-        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.NumericUpDown Number_soluongHH;
+        private System.Windows.Forms.Button btnDeleteHH;
+        private System.Windows.Forms.Button btnUpdateHH;
         private System.Windows.Forms.Label label28;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idHH;
+        private System.Windows.Forms.NumericUpDown sonambaohanh;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id_hh;
         private System.Windows.Forms.DataGridViewTextBoxColumn tenhanghoa;
         private System.Windows.Forms.DataGridViewTextBoxColumn soluong;
         private System.Windows.Forms.DataGridViewTextBoxColumn loai;
         private System.Windows.Forms.DataGridViewTextBoxColumn dongia;
         private System.Windows.Forms.DataGridViewTextBoxColumn baohanh;
         private System.Windows.Forms.DataGridViewTextBoxColumn ghichu;
+        private System.Windows.Forms.Button btnRefreshHH;
     }
 }
 
