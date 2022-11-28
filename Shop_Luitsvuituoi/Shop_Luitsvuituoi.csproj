@@ -71,6 +71,12 @@
     <Compile Include="GUI\KiemTraBaoHanh.Designer.cs">
       <DependentUpon>KiemTraBaoHanh.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\ListHoaDon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ListHoaDon.Designer.cs">
+      <DependentUpon>ListHoaDon.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,6 +110,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\KhachHang.resx">
       <DependentUpon>KhachHang.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ListHoaDon.resx">
+      <DependentUpon>ListHoaDon.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>

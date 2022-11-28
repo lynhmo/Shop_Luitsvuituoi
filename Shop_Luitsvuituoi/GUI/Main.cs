@@ -1,5 +1,6 @@
 ﻿using Shop_Luitsvuituoi.GUI;
 using System;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -29,9 +30,10 @@ namespace Shop_Luitsvuituoi
             // load combobox id hang hoa
             load_id_HH();
             //combobox loai load
-            //comboboxLoad_loai();
             comboboxHH_Loai_Load();
-            cnn.Close();
+            //combobox nhan vien load
+            comboboxNhanVien_Load();
+            cnn.Close(); 
         }
         private void load_table_NV()
         {
@@ -59,15 +61,15 @@ namespace Shop_Luitsvuituoi
             comboboxMaSP.ValueMember = "id_hh";
             comboboxMaSP.DataSource = ds.Tables["id_hh"];
         }
-        private void comboboxLoad_loai()
+        private void comboboxNhanVien_Load()
         {
-            string cmbLoai = "select loai from hanghoa";
-            SqlDataAdapter cmbLoai_ = new SqlDataAdapter(cmbLoai, cnn);
+            string cmbNhanvien = "select full_name,id from nhanvien";
+            SqlDataAdapter cmbNhanvien_ = new SqlDataAdapter(cmbNhanvien, cnn);
             DataSet ds1 = new DataSet();
-            cmbLoai_.Fill(ds1, "loai");
-            comboboxLoai.DisplayMember = "loai";
-            comboboxLoai.ValueMember = "loai";
-            comboboxLoai.DataSource = ds1.Tables["loai"];
+            cmbNhanvien_.Fill(ds1, "nhanvienName");
+            comboBoxNhanVien.DisplayMember = "full_name";
+            comboBoxNhanVien.ValueMember = "id";
+            comboBoxNhanVien.DataSource = ds1.Tables["nhanvienName"];
         }
         private void comboboxHH_Loai_Load()
         {
@@ -83,9 +85,6 @@ namespace Shop_Luitsvuituoi
             comboboxLoai.Items.Add("headset");
             comboboxLoai.Items.Add("mouse pad");
             comboboxLoai.Items.Add("laptop");
-            //comboboxLoai.DropDownStyle = ComboBoxStyle.DropDown;
-            //comboboxLoai.AutoCompleteSource = AutoCompleteSource.ListItems;
-            //comboboxLoai.AutoCompleteMode = AutoCompleteMode.Suggest;
         }
         private void btnListKhachHang_Click(object sender, EventArgs e)
         {
@@ -101,21 +100,32 @@ namespace Shop_Luitsvuituoi
         }
         private void btnTaoKH_Click(object sender, EventArgs e)
         {
-            SqlConnection cnn = new SqlConnection(connectionString);
             string tenKH = txtTenKhachHang.Text;
             string phone = txtPhone.Text;
-            if (String.IsNullOrEmpty(tenKH) || String.IsNullOrEmpty(phone))
+            if (!String.IsNullOrEmpty(tenKH) || !String.IsNullOrEmpty(phone))
             {
-                string query = $"INSERT INTO khachhang (tenKhachHang,phone) VALUES ('{tenKH}','{phone}')";
-                SqlCommand cmd = new SqlCommand(query, cnn);
+                string queryCheck = $"SELECT count(*) FROM khachhang WHERE tenKhachHang= '{tenKH}' AND phone = '{phone}'";
+                SqlCommand cmdC = new SqlCommand(queryCheck, cnn);
                 cnn.Open();
-                cmd.ExecuteNonQuery();
-                MessageBox.Show("Thêm khách hàng thành công!","Thành công");
+                int sl = (int)cmdC.ExecuteScalar();
                 cnn.Close();
+                if (sl >= 1)
+                {
+                    MessageBox.Show("Khách hàng này đã tồn tại!!!");
+                }
+                else
+                {
+                    string query = $"INSERT INTO khachhang (tenKhachHang,phone) VALUES ('{tenKH}','{phone}')";
+                    SqlCommand cmd = new SqlCommand(query, cnn);
+                    cnn.Open();
+                    cmd.ExecuteNonQuery();
+                    cnn.Close();
+                    MessageBox.Show("Thêm khách hàng thành công!", "Thành công");
+                }
             }
             else
             {
-                MessageBox.Show("Thêm khách hàng thất bại!","Thất bại");
+                MessageBox.Show("Không được để trống tên khách hàng và số điện thoại!","Thất bại");
             }
         }
 
@@ -163,6 +173,7 @@ namespace Shop_Luitsvuituoi
         }
         private void btnAddNV_Click(object sender, EventArgs e)
         {
+            string theDate = dateTimePickerBirth.Value.ToString("MM/dd/yyyy");
             if (String.IsNullOrEmpty(txtUsername.Text) || String.IsNullOrEmpty(txtPass.Text))
             {
                 MessageBox.Show("Thất bại!!! Vui lòng nhập username và password!!!");
@@ -181,7 +192,7 @@ namespace Shop_Luitsvuituoi
                 else
                 {
                     int admin = (boxAdmin.Checked == true) ? 1 : 0;
-                    string queryNV = $"INSERT INTO nhanvien (username,password,email,full_name,birth,address,phone,admin) VALUES ('{txtUsername.Text}','{txtPass.Text}','{txtEmail.Text}','{txtTenNV.Text}','{txtBirth.Text}','{txtAddress.Text}','{txtPhoneNV.Text}','{admin}')";
+                    string queryNV = $"INSERT INTO nhanvien (username,password,email,full_name,birth,address,phone,admin) VALUES ('{txtUsername.Text}','{txtPass.Text}','{txtEmail.Text}','{txtTenNV.Text}','{theDate}','{txtAddress.Text}','{txtPhoneNV.Text}','{admin}')";
                     SqlCommand cmd = new SqlCommand(queryNV, cnn);
                     cmd.ExecuteNonQuery();
                     //
@@ -247,9 +258,10 @@ namespace Shop_Luitsvuituoi
         public Form RefToMain { get; set; }
         private void navBar_SelectedIndexChanged(object sender, EventArgs e)
         {
-
             if (navBar.SelectedTab == dangxuatTab)
             {
+                //sau khi từ chối đăng xuất thì quay trở lại tab đầu tiên
+                navBar.SelectTab(0);
                 string message = "Bạn có muốn đăng xuất?!";
                 string title = "Đăng xuất";
                 MessageBoxButtons buttons = MessageBoxButtons.YesNo;
@@ -262,7 +274,7 @@ namespace Shop_Luitsvuituoi
                 else
                 {
                     //sau khi từ chối đăng xuất thì quay trở lại tab đầu tiên
-                    navBar.SelectTab(0);
+                    //navBar.SelectTab(0);
                 }
                 
             }
@@ -278,7 +290,6 @@ namespace Shop_Luitsvuituoi
         }
         private void btnAddHH_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show(comboboxLoai.Text);
             if (String.IsNullOrEmpty(txtTenHH.Text) || String.IsNullOrEmpty(txtDonGia.Text))
             {
                 MessageBox.Show("Vui lòng nhập username và password!!!");
@@ -398,25 +409,97 @@ namespace Shop_Luitsvuituoi
 
         private void btnTaoHoaDon_Click(object sender, EventArgs e)
         {
+            string theDate = dateTimePicker1.Value.ToString("MM/dd/yyyy");
+            //MessageBox.Show(theDate);
             if (String.IsNullOrEmpty(txtMaKhachHang.Text))
             {
                 MessageBox.Show("Vui lòng chọn khách hàng!!!");
             }
             else
             {
-                string queryNV = $"INSERT INTO hoadon (makh,nhanvien,tongtien) VALUES ('{txtMaKhachHang.Text}',1,100)";
+                
+                string queryNV = $"INSERT INTO hoadon (makh,nhanvien,tongtien,DateCreated) VALUES ('{txtMaKhachHang.Text}','{comboBoxNhanVien.SelectedValue}',100,'{theDate}')";
                 SqlCommand cmd = new SqlCommand(queryNV, cnn);
                 cnn.Open();
                 cmd.ExecuteNonQuery();
                 MessageBox.Show("Thêm thành công!");
-                cnn.Close();
+                
                 //
                 btnTaoHoaDon.Enabled = false;
                 btnAddSP_toCTHD.Enabled = true;
                 btnDeleteSP_toCTHD.Enabled = true;
                 btnInHoaDon.Enabled = true;
                 btnThanhToan.Enabled = true;
+                //
+                SqlCommand commandNV = new SqlCommand("Select id_hd from hoadon where makh=@idKH AND nhanvien=@idNV AND DateCreated=@dateC", cnn);
+                commandNV.Parameters.AddWithValue("@idKH", txtMaKhachHang.Text);
+                commandNV.Parameters.AddWithValue("@idNV", comboBoxNhanVien.SelectedValue);
+                commandNV.Parameters.AddWithValue("@dateC", theDate); 
+                // int result = command.ExecuteNonQuery();
+                using (SqlDataReader reader = commandNV.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        txtMaHoaDon.Text = String.Format("{0}", reader["id_hd"]);
+                        //Console.WriteLine(String.Format("{0}", reader["id"]));
+                    }
+                }
+                //
+                cnn.Close();
             }
+        }
+
+        private void btnListHoaDon_Click(object sender, EventArgs e)
+        {
+            ListHoaDon frmCTHD = new ListHoaDon();
+            frmCTHD.ShowDialog();
+        }
+
+        private void btnAddSP_toCTHD_Click(object sender, EventArgs e)
+        {
+            cnn.Open();
+            if (Convert.ToInt32(numericUpDown1.Value)==0 || txtTenSP.Text == null)
+            {
+                MessageBox.Show("Không được để trống dữ liệu sản phẩm !!!","Lỗi");
+            }
+            else
+            {
+                SqlCommand checkEx = new SqlCommand("SELECT count(*) FROM ChiTietHoaDon WHERE mahoadon= @mahoadon AND mahang= @mahang", cnn);
+                checkEx.Parameters.AddWithValue("@mahoadon", txtMaHoaDon.Text);
+                checkEx.Parameters.AddWithValue("@mahang", comboboxMaSP.Text);
+                int sl = (int)checkEx.ExecuteScalar();
+                if (sl == 1)
+                {
+                    int tongtienUpdate = int.Parse(txtGiaTien.Text) * Convert.ToInt32(numericUpDown1.Value);
+                    SqlCommand updateCTHD = new SqlCommand("UPDATE ChiTietHoaDon SET soluong = @soluong ,tong = @tong WHERE mahoadon=@mahoadon AND mahang=@mahang", cnn);
+                    updateCTHD.Parameters.AddWithValue("@mahoadon", txtMaHoaDon.Text);
+                    updateCTHD.Parameters.AddWithValue("@mahang", comboboxMaSP.Text);
+                    updateCTHD.Parameters.AddWithValue("@soluong", numericUpDown1.Value);
+                    updateCTHD.Parameters.AddWithValue("@tong", tongtienUpdate);
+                    updateCTHD.ExecuteNonQuery();
+                }
+                else
+                {
+                    int tongtien = int.Parse(txtGiaTien.Text) * Convert.ToInt32(numericUpDown1.Value);
+                    SqlCommand insertCTHD = new SqlCommand("INSERT INTO ChiTietHoaDon VALUES (@mahoadon,@mahang,@soluong,@dongia,@tong)", cnn);
+                    insertCTHD.Parameters.AddWithValue("@mahoadon", txtMaHoaDon.Text);
+                    insertCTHD.Parameters.AddWithValue("@mahang", comboboxMaSP.Text);
+                    insertCTHD.Parameters.AddWithValue("@soluong", numericUpDown1.Value);
+                    insertCTHD.Parameters.AddWithValue("@dongia", txtGiaTien.Text);
+                    insertCTHD.Parameters.AddWithValue("@tong", tongtien);
+                    insertCTHD.ExecuteNonQuery();
+                }
+                string tableCTHD = $"SELECT * FROM ChiTietHoaDon WHERE mahoadon = '{txtMaHoaDon.Text}'";
+                SqlDataAdapter daHD = new SqlDataAdapter(tableCTHD, cnn);
+                DataTable tableHD = new DataTable();
+                daHD.Fill(tableHD);
+                tableHoaDon.DataSource = tableHD;
+            }
+            cnn.Close();
+        }
+
+        private void comboboxMaSP_SelectedIndexChanged(object sender, EventArgs e)
+        {
         }
     }
 }
