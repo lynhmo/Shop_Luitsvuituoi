@@ -29,7 +29,9 @@ namespace Shop_Luitsvuituoi.GUI
         public string DonGiaHH { get { return Dongia; } } 
         private void AllSP_Load(object sender, EventArgs e)
         {
-            string connectionString = "Data Source=(local); Initial Catalog = Luitsvuituoi; Integrated Security=SSPI;";
+            string connectionString = "Data Source=(local); " +
+                "Initial Catalog = Luitsvuituoi; " +
+                "Integrated Security=SSPI;";
             SqlConnection cnn = new SqlConnection(connectionString);
             cnn.Open();
             string query = $"SELECT * FROM hanghoa";

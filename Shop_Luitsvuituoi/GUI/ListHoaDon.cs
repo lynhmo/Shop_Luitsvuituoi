@@ -20,7 +20,9 @@ namespace Shop_Luitsvuituoi.GUI
 
         private void ListHoaDon_Load(object sender, EventArgs e)
         {
-            string connectionString = "Data Source=(local); Initial Catalog = Luitsvuituoi; Integrated Security=SSPI;";
+            string connectionString = "Data Source=(local); " +
+                "Initial Catalog = Luitsvuituoi; " +
+                "Integrated Security=SSPI;";
             SqlConnection cnn = new SqlConnection(connectionString);
             cnn.Open();
             string query = $"SELECT * FROM hoadon";

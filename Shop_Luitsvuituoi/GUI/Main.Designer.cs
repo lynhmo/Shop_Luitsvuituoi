@@ -148,7 +148,12 @@
             this.thongkeTab = new System.Windows.Forms.TabPage();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.tableThongKe = new System.Windows.Forms.DataGridView();
+            this.id_tk = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.makhachhang = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nhanvien = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tongtien = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.datehd = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button14 = new System.Windows.Forms.Button();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
@@ -175,7 +180,7 @@
             this.thongkeTab.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tableThongKe)).BeginInit();
             this.SuspendLayout();
             // 
             // navBar
@@ -288,6 +293,7 @@
             this.btnThanhToan.TabIndex = 8;
             this.btnThanhToan.Text = "Thanh toán";
             this.btnThanhToan.UseVisualStyleBackColor = true;
+            this.btnThanhToan.Click += new System.EventHandler(this.btnThanhToan_Click);
             // 
             // btnDeleteSP_toCTHD
             // 
@@ -376,7 +382,6 @@
             this.comboboxMaSP.Name = "comboboxMaSP";
             this.comboboxMaSP.Size = new System.Drawing.Size(201, 24);
             this.comboboxMaSP.TabIndex = 6;
-            this.comboboxMaSP.SelectedIndexChanged += new System.EventHandler(this.comboboxMaSP_SelectedIndexChanged);
             // 
             // label10
             // 
@@ -642,7 +647,6 @@
             this.btnFindHH.TabIndex = 21;
             this.btnFindHH.Text = "Tìm kiếm";
             this.btnFindHH.UseVisualStyleBackColor = true;
-            this.btnFindHH.Click += new System.EventHandler(this.btnFindHH_Click);
             // 
             // tableHangHoa
             // 
@@ -1343,7 +1347,7 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.dataGridView1);
+            this.tabPage1.Controls.Add(this.tableThongKe);
             this.tabPage1.Controls.Add(this.button14);
             this.tabPage1.Controls.Add(this.dateTimePicker2);
             this.tabPage1.Controls.Add(this.dateTimePicker1);
@@ -1357,16 +1361,58 @@
             this.tabPage1.Text = "Doanh thu cửa hàng";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // tableThongKe
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(5, 42);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(1079, 574);
-            this.dataGridView1.TabIndex = 4;
+            this.tableThongKe.AllowUserToAddRows = false;
+            this.tableThongKe.AllowUserToDeleteRows = false;
+            this.tableThongKe.AllowUserToResizeColumns = false;
+            this.tableThongKe.AllowUserToResizeRows = false;
+            this.tableThongKe.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.tableThongKe.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tableThongKe.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.id_tk,
+            this.makhachhang,
+            this.nhanvien,
+            this.tongtien,
+            this.datehd});
+            this.tableThongKe.Location = new System.Drawing.Point(5, 42);
+            this.tableThongKe.Margin = new System.Windows.Forms.Padding(2);
+            this.tableThongKe.Name = "tableThongKe";
+            this.tableThongKe.RowHeadersVisible = false;
+            this.tableThongKe.RowHeadersWidth = 51;
+            this.tableThongKe.RowTemplate.Height = 24;
+            this.tableThongKe.Size = new System.Drawing.Size(1079, 574);
+            this.tableThongKe.TabIndex = 4;
+            // 
+            // id_tk
+            // 
+            this.id_tk.DataPropertyName = "id_hd";
+            this.id_tk.HeaderText = "Mã hoá đơn";
+            this.id_tk.Name = "id_tk";
+            // 
+            // makhachhang
+            // 
+            this.makhachhang.DataPropertyName = "makh";
+            this.makhachhang.HeaderText = "Mã khách hàng";
+            this.makhachhang.Name = "makhachhang";
+            // 
+            // nhanvien
+            // 
+            this.nhanvien.DataPropertyName = "nhanvien";
+            this.nhanvien.HeaderText = "Nhân viên";
+            this.nhanvien.Name = "nhanvien";
+            // 
+            // tongtien
+            // 
+            this.tongtien.DataPropertyName = "tongtien";
+            this.tongtien.HeaderText = "Tổng tiền";
+            this.tongtien.Name = "tongtien";
+            // 
+            // datehd
+            // 
+            this.datehd.DataPropertyName = "DateCreated";
+            this.datehd.HeaderText = "Ngày tạo hoá đơn";
+            this.datehd.Name = "datehd";
             // 
             // button14
             // 
@@ -1473,7 +1519,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tableThongKe)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1574,7 +1620,7 @@
         private System.Windows.Forms.TextBox txtPass;
         private System.Windows.Forms.Label lable;
         private System.Windows.Forms.Button btnRefresh;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView tableThongKe;
         private System.Windows.Forms.CheckBox boxAdmin;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn username;
@@ -1607,6 +1653,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn soluongHH;
         private System.Windows.Forms.DataGridViewTextBoxColumn dongia_hh;
         private System.Windows.Forms.DataGridViewTextBoxColumn thanhtien;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id_tk;
+        private System.Windows.Forms.DataGridViewTextBoxColumn makhachhang;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nhanvien;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tongtien;
+        private System.Windows.Forms.DataGridViewTextBoxColumn datehd;
     }
 }
 

@@ -17,7 +17,9 @@ namespace Shop_Luitsvuituoi
         {
             InitializeComponent();
         }
-        private static string connectionString = "Data Source=(local); Initial Catalog = Luitsvuituoi; Integrated Security=SSPI;";
+        private static string connectionString = "Data Source=(local); " +
+            "Initial Catalog = Luitsvuituoi; " +
+            "Integrated Security=SSPI;";
         private static SqlConnection cnn = new SqlConnection(connectionString);
         private void Main_Load(object sender, EventArgs e)
         {
@@ -33,6 +35,8 @@ namespace Shop_Luitsvuituoi
             comboboxHH_Loai_Load();
             //combobox nhan vien load
             comboboxNhanVien_Load();
+            //load table thong ke
+            load_thongke();
             cnn.Close(); 
         }
         private void load_table_NV()
@@ -60,6 +64,14 @@ namespace Shop_Luitsvuituoi
             comboboxMaSP.DisplayMember = "id_hh";
             comboboxMaSP.ValueMember = "id_hh";
             comboboxMaSP.DataSource = ds.Tables["id_hh"];
+        }
+        private void load_thongke()
+        {
+            string query = $"SELECT * FROM hoadon";
+            SqlDataAdapter da = new SqlDataAdapter(query, cnn);
+            DataTable dtbl = new DataTable();
+            da.Fill(dtbl);
+            tableThongKe.DataSource = dtbl;
         }
         private void comboboxNhanVien_Load()
         {
@@ -104,7 +116,8 @@ namespace Shop_Luitsvuituoi
             string phone = txtPhone.Text;
             if (!String.IsNullOrEmpty(tenKH) || !String.IsNullOrEmpty(phone))
             {
-                string queryCheck = $"SELECT count(*) FROM khachhang WHERE tenKhachHang= '{tenKH}' AND phone = '{phone}'";
+                string queryCheck = $"SELECT count(*) FROM khachhang " +
+                    $"WHERE tenKhachHang= '{tenKH}' AND phone = '{phone}'";
                 SqlCommand cmdC = new SqlCommand(queryCheck, cnn);
                 cnn.Open();
                 int sl = (int)cmdC.ExecuteScalar();
@@ -115,7 +128,8 @@ namespace Shop_Luitsvuituoi
                 }
                 else
                 {
-                    string query = $"INSERT INTO khachhang (tenKhachHang,phone) VALUES ('{tenKH}','{phone}')";
+                    string query = $"INSERT INTO khachhang (tenKhachHang,phone) " +
+                        $"VALUES ('{tenKH}','{phone}')";
                     SqlCommand cmd = new SqlCommand(query, cnn);
                     cnn.Open();
                     cmd.ExecuteNonQuery();
@@ -192,7 +206,9 @@ namespace Shop_Luitsvuituoi
                 else
                 {
                     int admin = (boxAdmin.Checked == true) ? 1 : 0;
-                    string queryNV = $"INSERT INTO nhanvien (username,password,email,full_name,birth,address,phone,admin) VALUES ('{txtUsername.Text}','{txtPass.Text}','{txtEmail.Text}','{txtTenNV.Text}','{theDate}','{txtAddress.Text}','{txtPhoneNV.Text}','{admin}')";
+                    string queryNV = $"INSERT INTO nhanvien (username,password,email,full_name,birth,address,phone,admin) " +
+                        $"VALUES ('{txtUsername.Text}','{txtPass.Text}','{txtEmail.Text}'," +
+                        $"'{txtTenNV.Text}','{theDate}','{txtAddress.Text}','{txtPhoneNV.Text}','{admin}')";
                     SqlCommand cmd = new SqlCommand(queryNV, cnn);
                     cmd.ExecuteNonQuery();
                     //
@@ -222,7 +238,13 @@ namespace Shop_Luitsvuituoi
         {
             SqlConnection cnn = new SqlConnection(connectionString);
             int admin = (boxAdmin.Checked == true) ? 1 : 0;
-            string queryNV = $"UPDATE nhanvien SET username = '{txtUsername.Text}', password = '{txtPass.Text}', email = '{txtEmail.Text}', full_name = '{txtTenNV.Text}', address = '{txtAddress.Text}', phone = '{txtPhoneNV.Text}', admin = '{admin}' WHERE id = '{txtMaNV.Text}'";
+            string queryNV = $"UPDATE nhanvien SET username = '{txtUsername.Text}', " +
+                $"password = '{txtPass.Text}', " +
+                $"email = '{txtEmail.Text}', " +
+                $"full_name = '{txtTenNV.Text}', " +
+                $"address = '{txtAddress.Text}', " +
+                $"phone = '{txtPhoneNV.Text}', " +
+                $"admin = '{admin}' WHERE id = '{txtMaNV.Text}'";
             SqlCommand cmd = new SqlCommand(queryNV, cnn);
             cnn.Open();
             cmd.ExecuteNonQuery();
@@ -270,13 +292,7 @@ namespace Shop_Luitsvuituoi
                 {
                     this.Dispose();
                     this.RefToMain.Show();
-                }
-                else
-                {
-                    //sau khi từ chối đăng xuất thì quay trở lại tab đầu tiên
-                    //navBar.SelectTab(0);
-                }
-                
+                } 
             }
             // refresh lai button khi chuyen qua tab khac
             if (navBar.SelectedTab != banhangTab)
@@ -297,7 +313,9 @@ namespace Shop_Luitsvuituoi
             else
             {
                 SqlConnection cnn = new SqlConnection(connectionString);
-                string queryNV = $"INSERT INTO hanghoa (tenhanghoa,soluong,loai,dongia,ghichu,baohanh) VALUES ('{txtTenHH.Text}','{Number_soluongHH.Value}','{comboboxLoai.Text}','{txtDonGia.Text}','{txtGhichu.Text}','{sonambaohanh.Value}')";
+                string queryNV = $"INSERT INTO hanghoa (tenhanghoa,soluong,loai,dongia,ghichu,baohanh) " +
+                    $"VALUES ('{txtTenHH.Text}','{Number_soluongHH.Value}','{comboboxLoai.Text}'," +
+                    $"'{txtDonGia.Text}','{txtGhichu.Text}','{sonambaohanh.Value}')";
                 SqlCommand cmd = new SqlCommand(queryNV, cnn);
                 cnn.Open();
                 cmd.ExecuteNonQuery();
@@ -371,7 +389,6 @@ namespace Shop_Luitsvuituoi
             MessageBox.Show("Xoá thành công!");
             ClearTextHangHoa();
         }
-
         private void txtDonGia_KeyPress(object sender, KeyPressEventArgs e)
         {
             if ((!char.IsNumber(e.KeyChar)) && (!char.IsControl(e.KeyChar)))
@@ -389,62 +406,48 @@ namespace Shop_Luitsvuituoi
             txtGhichu.Text = null;
             sonambaohanh.Text = null;
         }
-
         private void btnRefreshHH_Click(object sender, EventArgs e)
         {
             ClearTextHangHoa();
         }
-
-        private void btnFindHH_Click(object sender, EventArgs e)
-        {
-
-        }
-        
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             // hàm ngăn chặn form Main đóng mà form login vẫn mở trong background
             this.Dispose();
             this.RefToMain.Show();
         }
-
         private void btnTaoHoaDon_Click(object sender, EventArgs e)
         {
             string theDate = dateTimePicker1.Value.ToString("MM/dd/yyyy");
-            //MessageBox.Show(theDate);
             if (String.IsNullOrEmpty(txtMaKhachHang.Text))
             {
                 MessageBox.Show("Vui lòng chọn khách hàng!!!");
             }
             else
             {
-                
-                string queryNV = $"INSERT INTO hoadon (makh,nhanvien,tongtien,DateCreated) VALUES ('{txtMaKhachHang.Text}','{comboBoxNhanVien.SelectedValue}',100,'{theDate}')";
+                string queryNV = $"INSERT INTO hoadon (makh,nhanvien,tongtien,DateCreated) " +
+                    $"VALUES ('{txtMaKhachHang.Text}','{comboBoxNhanVien.SelectedValue}',0,'{theDate}')";
                 SqlCommand cmd = new SqlCommand(queryNV, cnn);
                 cnn.Open();
                 cmd.ExecuteNonQuery();
                 MessageBox.Show("Thêm thành công!");
-                
-                //
                 btnTaoHoaDon.Enabled = false;
                 btnAddSP_toCTHD.Enabled = true;
                 btnDeleteSP_toCTHD.Enabled = true;
                 btnInHoaDon.Enabled = true;
                 btnThanhToan.Enabled = true;
-                //
-                SqlCommand commandNV = new SqlCommand("Select id_hd from hoadon where makh=@idKH AND nhanvien=@idNV AND DateCreated=@dateC", cnn);
+                SqlCommand commandNV = new SqlCommand("Select id_hd from hoadon " +
+                    "WHERE makh=@idKH AND nhanvien=@idNV AND DateCreated=@dateC", cnn);
                 commandNV.Parameters.AddWithValue("@idKH", txtMaKhachHang.Text);
                 commandNV.Parameters.AddWithValue("@idNV", comboBoxNhanVien.SelectedValue);
                 commandNV.Parameters.AddWithValue("@dateC", theDate); 
-                // int result = command.ExecuteNonQuery();
                 using (SqlDataReader reader = commandNV.ExecuteReader())
                 {
                     if (reader.Read())
                     {
                         txtMaHoaDon.Text = String.Format("{0}", reader["id_hd"]);
-                        //Console.WriteLine(String.Format("{0}", reader["id"]));
                     }
                 }
-                //
                 cnn.Close();
             }
         }
@@ -454,7 +457,6 @@ namespace Shop_Luitsvuituoi
             ListHoaDon frmCTHD = new ListHoaDon();
             frmCTHD.ShowDialog();
         }
-
         private void btnAddSP_toCTHD_Click(object sender, EventArgs e)
         {
             cnn.Open();
@@ -464,14 +466,17 @@ namespace Shop_Luitsvuituoi
             }
             else
             {
-                SqlCommand checkEx = new SqlCommand("SELECT count(*) FROM ChiTietHoaDon WHERE mahoadon= @mahoadon AND mahang= @mahang", cnn);
+                SqlCommand checkEx = new SqlCommand("SELECT count(*) FROM ChiTietHoaDon " +
+                    "WHERE mahoadon= @mahoadon AND mahang= @mahang", cnn);
                 checkEx.Parameters.AddWithValue("@mahoadon", txtMaHoaDon.Text);
                 checkEx.Parameters.AddWithValue("@mahang", comboboxMaSP.Text);
                 int sl = (int)checkEx.ExecuteScalar();
                 if (sl == 1)
                 {
                     int tongtienUpdate = int.Parse(txtGiaTien.Text) * Convert.ToInt32(numericUpDown1.Value);
-                    SqlCommand updateCTHD = new SqlCommand("UPDATE ChiTietHoaDon SET soluong = @soluong ,tong = @tong WHERE mahoadon=@mahoadon AND mahang=@mahang", cnn);
+                    SqlCommand updateCTHD = new SqlCommand("UPDATE ChiTietHoaDon " +
+                        "SET soluong = @soluong ,tong = @tong " +
+                        "WHERE mahoadon=@mahoadon AND mahang=@mahang", cnn);
                     updateCTHD.Parameters.AddWithValue("@mahoadon", txtMaHoaDon.Text);
                     updateCTHD.Parameters.AddWithValue("@mahang", comboboxMaSP.Text);
                     updateCTHD.Parameters.AddWithValue("@soluong", numericUpDown1.Value);
@@ -481,7 +486,8 @@ namespace Shop_Luitsvuituoi
                 else
                 {
                     int tongtien = int.Parse(txtGiaTien.Text) * Convert.ToInt32(numericUpDown1.Value);
-                    SqlCommand insertCTHD = new SqlCommand("INSERT INTO ChiTietHoaDon VALUES (@mahoadon,@mahang,@soluong,@dongia,@tong)", cnn);
+                    SqlCommand insertCTHD = new SqlCommand("INSERT INTO ChiTietHoaDon " +
+                        "VALUES (@mahoadon,@mahang,@soluong,@dongia,@tong)", cnn);
                     insertCTHD.Parameters.AddWithValue("@mahoadon", txtMaHoaDon.Text);
                     insertCTHD.Parameters.AddWithValue("@mahang", comboboxMaSP.Text);
                     insertCTHD.Parameters.AddWithValue("@soluong", numericUpDown1.Value);
@@ -497,9 +503,28 @@ namespace Shop_Luitsvuituoi
             }
             cnn.Close();
         }
-
-        private void comboboxMaSP_SelectedIndexChanged(object sender, EventArgs e)
+        private void btnThanhToan_Click(object sender, EventArgs e)
         {
+            SqlCommand CountCTHD = new SqlCommand("SELECT SUM(tong) \"tongtien\" FROM ChiTietHoaDon WHERE mahoadon = @mahoadon", cnn);
+            CountCTHD.Parameters.AddWithValue("@mahoadon", txtMaHoaDon.Text);
+            cnn.Open();
+            using (SqlDataReader reader = CountCTHD.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    string tongtienHoaDon = String.Format("{0}", reader["tongtien"]);
+                    int hehe = Convert.ToInt32(String.Format("{0}", reader["tongtien"]));
+                    SqlCommand UpdateHD = new SqlCommand("UPDATE hoadon SET tongtien = @tongtien WHERE id_hd=@mahoadon", cnn);
+                    UpdateHD.Parameters.AddWithValue("@tongtien", hehe);
+                    UpdateHD.Parameters.AddWithValue("@mahoadon", txtMaHoaDon.Text);
+                    cnn.Close();
+                    cnn.Open();
+                    UpdateHD.ExecuteNonQuery();
+                    cnn.Close();
+                    MessageBox.Show("Thành công! " + hehe);
+                }
+            }
+
         }
     }
 }
